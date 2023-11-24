@@ -2,13 +2,14 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addContact } from 'redux/contacts.reducer';
 import css from './Form.module.css';
+import { selectContacts } from 'redux/contacts.selectors';
 
 const ContactForm = () => {
   const [name, setName] = useState('');
-  const [number, setNumber] = useState('');
+  const [phone, setPhone] = useState('');
 
   const dispatch = useDispatch();
-  const contacts = useSelector(state => state.contactsStore.contacts);
+  const contacts = useSelector(selectContacts);
 
   const inputChange = event => {
     const value = event.target.value;
@@ -19,7 +20,7 @@ const ContactForm = () => {
         return;
       }
       case 'number': {
-        setNumber(value);
+        setPhone(value);
         return;
       }
       default:
@@ -28,6 +29,10 @@ const ContactForm = () => {
   };
 
   const submit = event => {
+    const contact = {
+      name: name,
+      phone: phone,
+    };
     event.preventDefault();
     const hasDuplicates = contacts.find(
       item => item.name.toLowerCase() === name.toLowerCase()
@@ -36,9 +41,9 @@ const ContactForm = () => {
       alert(`"${name}" is already in contacts`);
       return;
     }
-    dispatch(addContact(name, number));
+    dispatch(addContact(contact));
     setName('');
-    setNumber('');
+    setPhone('');
   };
 
   return (
@@ -47,12 +52,7 @@ const ContactForm = () => {
         <span>Name</span>
         <input type="text" name="name" onChange={inputChange} value={name} />
         <span>Number</span>
-        <input
-          type="text"
-          name="number"
-          onChange={inputChange}
-          value={number}
-        />
+        <input type="text" name="number" onChange={inputChange} value={phone} />
       </label>
       <button type="submit">Add contact </button>
     </form>
