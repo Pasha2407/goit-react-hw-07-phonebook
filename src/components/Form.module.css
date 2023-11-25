@@ -4,7 +4,15 @@
   border-radius: 20px;
   padding: 20px;
   background-color: white;
-  margin-top: 40px;
+  margin-top: 20px;
+}
+
+.Container>h2 {
+  margin: 0;
+}
+
+.Form {
+  margin: 10px 0;
 }
 
 .Form>label {

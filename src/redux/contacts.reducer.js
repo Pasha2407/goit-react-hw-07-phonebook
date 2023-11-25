@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { createSlice, createAsyncThunk, isAnyOf } from '@reduxjs/toolkit';
 import axios from 'axios';
 
 export const fetchContacts = createAsyncThunk(
@@ -56,41 +56,36 @@ const contactsSlice = createSlice({
                 state.isLoading = false;
                 state.contacts = payload;
             })
-            .addCase(fetchContacts.pending, (state) => {
-                state.isLoading = true;
-                state.error = null;
-            })
-            .addCase(fetchContacts.rejected, (state, { payload }) => {
-                state.isLoading = false;
-                state.error = payload;
-            })
-
             .addCase(addContact.fulfilled, (state, { payload }) => {
                 state.isLoading = false;
                 state.contacts.push(payload);
             })
-            .addCase(addContact.pending, (state) => {
-                state.isLoading = true;
-                state.error = null;
-            })
-            .addCase(addContact.rejected, (state, { payload }) => {
-                state.isLoading = false;
-                state.error = payload;
-            })
-
             .addCase(deleteContact.fulfilled, (state, { payload }) => {
                 state.isLoading = false;
                 state.contacts = state.contacts.filter(item => item.id !== payload.id);
             })
-            .addCase(deleteContact.pending, (state) => {
-                state.isLoading = true;
-                state.error = null;
-            })
-            .addCase(deleteContact.rejected, (state, { payload }) => {
-                state.isLoading = false;
-                state.error = payload;
-            });
-
+            .addMatcher(
+                isAnyOf(
+                    fetchContacts.pending,
+                    addContact.pending,
+                    deleteContact.pending
+                ),
+                state => {
+                    state.isLoading = true;
+                    state.error = null;
+                }
+            )
+            .addMatcher(
+                isAnyOf(
+                    fetchContacts.rejected,
+                    addContact.rejected,
+                    deleteContact.rejected
+                ),
+                (state, { payload }) => {
+                    state.isLoading = false;
+                    state.error = payload;
+                }
+            )
     },
 });
 

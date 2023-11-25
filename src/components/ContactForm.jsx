@@ -4,7 +4,7 @@ import { addContact } from 'redux/contacts.reducer';
 import css from './Form.module.css';
 import { selectContacts } from 'redux/contacts.selectors';
 
-const ContactForm = () => {
+export const ContactForm = () => {
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
 
@@ -58,5 +58,3 @@ const ContactForm = () => {
     </form>
   );
 };
-
-export default ContactForm;

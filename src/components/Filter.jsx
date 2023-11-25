@@ -1,9 +1,9 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { selectContacts, selectFilter } from 'redux/contacts.selectors';
+import { selectFilter } from 'redux/contacts.selectors';
 import { addFilter } from 'redux/filter.reducer';
 import css from './Form.module.css';
 
-const Filter = () => {
+export const Filter = () => {
   const dispatch = useDispatch();
   const filter = useSelector(selectFilter);
 
@@ -16,11 +16,8 @@ const Filter = () => {
           name="filter"
           value={filter}
           onChange={event => dispatch(addFilter(event.target.value))}
-          disabled={useSelector(selectContacts).length === 0}
         ></input>
       </label>
     </form>
   );
 };
-
-export default Filter;

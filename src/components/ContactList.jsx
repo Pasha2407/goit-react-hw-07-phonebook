@@ -21,9 +21,13 @@ export const ContactList = () => {
 
   return (
     <div>
-      {contacts.map(item => {
-        return <ContactListItem {...item} key={item.id} />;
-      })}
+      {isLoading && !error ? (
+        <i>Loading...</i>
+      ) : (
+        contacts.map(item => {
+          return <ContactListItem {...item} key={item.id} />;
+        })
+      )}
     </div>
   );
 };
